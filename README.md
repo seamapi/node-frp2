@@ -6,7 +6,7 @@ Use [frp](https://github.com/fatedier/frp) as an npm module for tighter integrat
 
 ## Usage
 
-`npm install frp`
+`npm install node-frp2`
 
 ```javascript
 // Web service to proxy (on client)
