@@ -1,0 +1,22 @@
+{
+  "name": "frp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "install": "node install.js",
+    "test": "ava tests/**/*.test.js"
+  },
+  "dependencies": {
+    "bent": "^7.3.10",
+    "decamelize": "^4.0.0",
+    "decompress-tar": "^4.1.1",
+    "follow-redirects": "^1.13.0",
+    "tar": "^6.0.5",
+    "tmp": "^0.2.1"
+  },
+  "devDependencies": {
+    "ava": "^3.12.1",
+    "get-port": "^5.1.1"
+  }
+}
