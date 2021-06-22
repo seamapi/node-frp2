@@ -64,8 +64,12 @@ module.exports = async () => {
   // e.g. download something like frpc-ubuntu.tar.xz
 
   const downloadPath = path.resolve(__dirname, myAsset.name)
-  const frpcPath = path.resolve(__dirname, myAsset.name, "frpc")
-  const frpsPath = path.resolve(__dirname, myAsset.name, "frps")
+  const extractDirPath = path.resolve(
+    __dirname,
+    myAsset.name.replace(".tar.gz", "")
+  )
+  const frpcPath = path.resolve(extractDirPath, "frpc")
+  const frpsPath = path.resolve(extractDirPath, "frps")
 
   if (fs.existsSync(frpcPath) && fs.existsSync(frpsPath)) {
     return { frpsPath, frpcPath }
@@ -83,12 +87,12 @@ module.exports = async () => {
   // Extract the files from the downloaded asset (i.e. pull out the frpc binary)
   // After this, you should have a "frpc" executable file
 
-  if (!fs.existsSync(path.join(__dirname, "extracted"))) {
+  if (!fs.existsSync(extractDirPath)) {
     console.log(`extracting ${myAsset.name}...`)
     let tarXPath = downloadPath
     await tar.x({
       file: tarXPath,
-      z: tarXPath.includes(".gz"),
+      z: true,
     })
     fs.unlinkSync(tarXPath)
 

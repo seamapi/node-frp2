@@ -17,6 +17,8 @@
   },
   "devDependencies": {
     "ava": "^3.12.1",
-    "get-port": "^5.1.1"
+    "get-port": "^5.1.1",
+    "micro": "^9.3.4",
+    "test-listen": "^1.1.0"
   }
 }
