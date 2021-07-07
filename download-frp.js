@@ -47,7 +47,17 @@ const releaseVersionToUse = "0.37.0"
 module.exports = async () => {
   // Get all the assets from the github release page
   const releaseAPIUrl = `https://api.github.com/repos/fatedier/frp/releases/tags/v${releaseVersionToUse}`
-  const { assets } = await getJSON(releaseAPIUrl)
+  const githubReleasesJSONPath = path.resolve(__dirname, "github_releases.json")
+  let githubReleasesJSON
+  if (!fs.existsSync(githubReleasesJSONPath)) {
+    githubReleasesJSON = await getJSON(releaseAPIUrl)
+    fs.writeFileSync(githubReleasesJSONPath, JSON.stringify(githubReleasesJSON))
+  } else {
+    githubReleasesJSON = JSON.parse(
+      fs.readFileSync(githubReleasesJSONPath).toString()
+    )
+  }
+  const { assets } = githubReleasesJSON
 
   // Find the asset for my operating system
   const myAsset = assets.find((asset) => asset.name.includes(osRelease))
@@ -82,6 +92,7 @@ module.exports = async () => {
       myAsset.browser_download_url,
       path.resolve(__dirname, downloadPath)
     )
+    await new Promise((r) => setTimeout(r, 100)) // prevents zlib issue
   }
 
   // Extract the files from the downloaded asset (i.e. pull out the frpc binary)

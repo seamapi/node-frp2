@@ -2,3 +2,4 @@ node_modules
 *.tar.gz
 *.tar.xz
 frp_*
+github_releases.json
