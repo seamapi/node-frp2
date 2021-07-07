@@ -4,6 +4,8 @@
 
 Use [frp](https://github.com/fatedier/frp) as an npm module for tighter integration with node apps (e.g. test fixtures).
 
+Note: This automatically downloads and runs the `frpc` or `frps` binary for the installer's operating system.
+
 ## Usage
 
 `npm install node-frp2`
