@@ -18,7 +18,7 @@ switch (platform) {
     osRelease = `windows_${arch}`
     break
   case "darwin":
-    osRelease = "osx"
+    osRelease = "darwin_amd64"
     break
   case "freebsd":
     osRelease = "freebsd"
