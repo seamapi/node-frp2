@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "bent": "^7.3.10",
+    "bunyan": "^1.8.15",
     "decamelize": "^4.0.0",
     "decompress-tar": "^4.1.1",
     "follow-redirects": "^1.13.0",

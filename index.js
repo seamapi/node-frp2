@@ -2,11 +2,14 @@ const child_process = require("child_process")
 const fs = require("fs")
 const tmp = require("tmp")
 const decamelize = require("decamelize")
-const path = require("path")
-const bent = require("bent")
-
-const getJSON = bent("json")
 const downloadfrp = require("./download-frp")
+const bunyan = require("bunyan")
+const debug = require("debug")("node-frp2")
+
+const log = bunyan.createLogger({
+  name: "node-frp2",
+  level: debug.enabled ? "trace" : "info",
+})
 
 const getTemporaryConfigFile = async (config) => {
   let configPath, bindPort
@@ -24,7 +27,7 @@ const getTemporaryConfigFile = async (config) => {
             .join("\n")}`
       )
       .join("\n\n")}`
-    console.log(frpConfigContent)
+    log.trace({ frpConfigContent })
     configPath = tmp.tmpNameSync() + ".ini"
     fs.writeFileSync(configPath, frpConfigContent)
   }
@@ -39,10 +42,10 @@ module.exports.startClient = async (config) => {
     shell: true,
   })
   proc.stdout.on("data", (data) => {
-    console.log(`frpc stdout: ${data}`)
+    log.trace({ frpcStdout: data.toString() })
   })
   proc.stderr.on("data", (data) => {
-    console.log(`frpc stderr: ${data}`)
+    log.trace({ frpcStderr: data.toString() })
   })
 
   let isClosed = false
@@ -87,10 +90,10 @@ module.exports.startServer = async (config) => {
     shell: true,
   })
   proc.stdout.on("data", (data) => {
-    console.log(`frps stdout: ${data}`)
+    log.trace({ frpsStdout: data.toString() })
   })
   proc.stderr.on("data", (data) => {
-    console.log(`frps stderr: ${data}`)
+    log.trace({ frpsStderr: data.toString() })
   })
 
   let isClosed = false
