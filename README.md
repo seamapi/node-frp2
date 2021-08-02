@@ -37,6 +37,6 @@ const client = await frp.startClient({
   },
 })
 
-const response = await request(`http://127.0.0.1:2000`) 
+const response = await request(`http://127.0.0.1:2000`)
 // response === "Hello world!"
 ```
