@@ -4,14 +4,18 @@ const downloadFile = require("./download-file")
 const path = require("path")
 const fs = require("fs")
 const tar = require("tar")
-
+const compressing = require("compressing")
 const getJSON = bent("json", {
   "User-Agent": "seveibar, frpc-bin (an npm module)",
 })
 
 const platform = os.platform()
-const arch = os.arch()
+
+let arch = os.arch()
 let osRelease = null
+
+if(arch == "x64") arch = "amd64";
+else if(arch == "x32") arch = "386";
 
 switch (platform) {
   case "win32":
@@ -74,10 +78,19 @@ module.exports = async () => {
   // e.g. download something like frpc-ubuntu.tar.xz
 
   const downloadPath = path.resolve(__dirname, myAsset.name)
-  const extractDirPath = path.resolve(
-    __dirname,
-    myAsset.name.replace(".tar.gz", "")
-  )
+  let extractDirPath;
+  if(arch == "amd64" || arch =="386"){
+    extractDirPath = path.resolve(
+      __dirname,
+      myAsset.name.replace(".zip", "")
+    )
+  }else{
+    extractDirPath = path.resolve(
+      __dirname,
+      myAsset.name.replace(".tar.gz", "")
+    )
+  }
+
   const frpcPath = path.resolve(extractDirPath, "frpc")
   const frpsPath = path.resolve(extractDirPath, "frps")
 
@@ -101,10 +114,16 @@ module.exports = async () => {
   if (!fs.existsSync(extractDirPath)) {
     console.log(`extracting ${myAsset.name}...`)
     let tarXPath = downloadPath
-    await tar.x({
-      file: tarXPath,
-      z: true,
-    })
+
+    if(arch == "amd64" || arch =="386"){
+      await compressing.zip.uncompress(`${extractDirPath}.zip`,__dirname);
+    }else{
+      await tar.x({
+        file: tarXPath,
+        z: true,
+      })
+    }
+
     fs.unlinkSync(tarXPath)
 
     if (!fs.existsSync(frpcPath)) {

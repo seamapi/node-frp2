@@ -15,7 +15,8 @@
     "decompress-tar": "^4.1.1",
     "follow-redirects": "^1.13.0",
     "tar": "^6.0.5",
-    "tmp": "^0.2.1"
+    "tmp": "^0.2.1",
+    "compressing": "^1.5.1"
   },
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^8.0.1",
