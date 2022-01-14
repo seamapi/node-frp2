@@ -11,15 +11,12 @@ const getJSON = bent("json", {
 
 const platform = os.platform()
 
-let arch = os.arch()
+const arch = os.arch()
 let osRelease = null
-
-if(arch == "x64") arch = "amd64";
-else if(arch == "x32") arch = "386";
 
 switch (platform) {
   case "win32":
-    osRelease = `windows_${arch}`
+    osRelease = `windows_${arch.replace("x64", "amd64").replace("x32", "386")}`
     break
   case "darwin":
     osRelease = "darwin_amd64"
@@ -79,7 +76,7 @@ module.exports = async () => {
 
   const downloadPath = path.resolve(__dirname, myAsset.name)
   let extractDirPath;
-  if(arch == "amd64" || arch =="386"){
+  if(platform == "win32"){
     extractDirPath = path.resolve(
       __dirname,
       myAsset.name.replace(".zip", "")
@@ -115,7 +112,7 @@ module.exports = async () => {
     console.log(`extracting ${myAsset.name}...`)
     let tarXPath = downloadPath
 
-    if(arch == "amd64" || arch =="386"){
+    if(platform == "win32"){
       await compressing.zip.uncompress(`${extractDirPath}.zip`,__dirname);
     }else{
       await tar.x({
